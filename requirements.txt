@@ -2,5 +2,7 @@ torch
 onnx>=1.10.0
 onnxsim
 onnxruntime-gpu
-numpy
+numpy==1.26.4
 tqdm
+termcolor
+pyyaml
