@@ -15,13 +15,14 @@ from onnxruntime.quantization.quant_utils import QuantizationMode, QuantType
 import numpy as _np
 import typing as _t
 def _import_ort_tensor_data():
+    # Prefer calibrate.TensorData since onnx_quantizer imports from calibrate
     try:
-        from onnxruntime.quantization.quant_utils import TensorData as _TD
+        from onnxruntime.quantization.calibrate import TensorData as _TD
         return _TD
     except Exception:
         pass
     try:
-        from onnxruntime.quantization.calibrate import TensorData as _TD
+        from onnxruntime.quantization.quant_utils import TensorData as _TD
         return _TD
     except Exception:
         pass
@@ -463,21 +464,47 @@ def deploy_QOperator(model, tensor_range, args):
 
     # Adapt to ORT API change: convert list [min, max] to TensorData if required
     tensors_range_ort = tensor_range
-    if isinstance(tensor_range, dict):
+    if isinstance(tensor_range, dict) and ORT_TensorData is not None:
         converted = {}
-        need_convert = False
+        dropped = 0
         for k, v in tensor_range.items():
-            if not isinstance(v, (list, tuple, _np.ndarray)):
+            if isinstance(v, ORT_TensorData):
                 converted[k] = v
                 continue
+            # If it's a similar object from a different module, reconstruct
+            if hasattr(v, 'name') and hasattr(v, 'data'):
+                td = _to_ort_tensor_data(getattr(v, 'name', k), getattr(v, 'data', v))
+                if td is not None:
+                    converted[k] = td
+                    continue
+            # Fallback: try to convert any sequence to np.array and wrap
             td = _to_ort_tensor_data(k, v)
+            if td is None:
+                # As a last resort, compute [min, max] then wrap
+                try:
+                    arr = _np.asarray(v, dtype=_np.float32)
+                    mn = float(arr.min())
+                    mx = float(arr.max())
+                    td = _to_ort_tensor_data(k, [mn, mx])
+                except Exception:
+                    td = None
             if td is not None:
                 converted[k] = td
-                need_convert = True
             else:
-                converted[k] = v
-        if need_convert:
-            tensors_range_ort = converted
+                dropped += 1
+        if dropped > 0:
+            try:
+                logger.info(f"deploy_QOperator: dropped {dropped} entries without TensorData")
+            except Exception:
+                pass
+        tensors_range_ort = converted
+    elif isinstance(tensor_range, dict) and ORT_TensorData is None:
+        # Avoid passing illegal types to ORT when we cannot import TensorData
+        try:
+            logger.info("deploy_QOperator: ORT TensorData not found; skipping provided tensor ranges")
+        except Exception:
+            pass
+        tensors_range_ort = {}
 
     quantizer = ONNXQuantizer(model, per_channel, False, mode, True,
                               weight_type, activation_type, tensors_range_ort,
