@@ -12,11 +12,40 @@ from onnx import TensorProto, numpy_helper
 from onnx.external_data_helper import convert_model_to_external_data
 from onnxruntime.quantization.onnx_quantizer import ONNXQuantizer
 from onnxruntime.quantization.quant_utils import QuantizationMode, QuantType
-try:
-    # ORT >= 1.16 expects tensors_range values to be TensorData
-    from onnxruntime.quantization.quant_utils import TensorData as ORT_TensorData
-except Exception:
-    ORT_TensorData = None
+import numpy as _np
+import typing as _t
+def _import_ort_tensor_data():
+    try:
+        from onnxruntime.quantization.quant_utils import TensorData as _TD
+        return _TD
+    except Exception:
+        pass
+    try:
+        from onnxruntime.quantization.calibrate import TensorData as _TD
+        return _TD
+    except Exception:
+        pass
+    return None
+
+ORT_TensorData = _import_ort_tensor_data()
+
+def _to_ort_tensor_data(name: str, val: _t.Any):
+    if ORT_TensorData is None:
+        return None
+    rng = _np.asarray(val, dtype=_np.float32)
+    # Try multiple constructor signatures for compatibility across ORT versions
+    for args, kwargs in (
+        ((name, rng), {}),
+        ((), {"name": name, "data": rng}),
+        ((rng, name), {}),
+        ((), {"tensor_name": name, "data": rng}),
+        ((name, [float(rng[0]), float(rng[-1])]), {}),
+    ):
+        try:
+            return ORT_TensorData(*args, **kwargs)
+        except Exception:
+            continue
+    return None
 from termcolor import colored
 
 from .platform_settings import platform_setting_table
@@ -434,15 +463,21 @@ def deploy_QOperator(model, tensor_range, args):
 
     # Adapt to ORT API change: convert list [min, max] to TensorData if required
     tensors_range_ort = tensor_range
-    if ORT_TensorData is not None and isinstance(tensor_range, dict):
-        try:
-            tensors_range_ort = {
-                k: ORT_TensorData(k, np.asarray(v, dtype=np.float32))
-                for k, v in tensor_range.items()
-            }
-        except Exception:
-            # Fallback to original if conversion fails; ORT may accept legacy format
-            tensors_range_ort = tensor_range
+    if isinstance(tensor_range, dict):
+        converted = {}
+        need_convert = False
+        for k, v in tensor_range.items():
+            if not isinstance(v, (list, tuple, _np.ndarray)):
+                converted[k] = v
+                continue
+            td = _to_ort_tensor_data(k, v)
+            if td is not None:
+                converted[k] = td
+                need_convert = True
+            else:
+                converted[k] = v
+        if need_convert:
+            tensors_range_ort = converted
 
     quantizer = ONNXQuantizer(model, per_channel, False, mode, True,
                               weight_type, activation_type, tensors_range_ort,
