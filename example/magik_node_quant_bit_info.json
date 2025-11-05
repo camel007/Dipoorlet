@@ -1,0 +1,799 @@
+{
+	"/model.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8,
+		"MAX": 1000,
+		"MIN": -1000
+	},
+	"/model.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.2/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.3/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.3/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.4/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.5/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.5/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.1/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.1/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.1/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.1/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/m/m.1/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/cv3/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/m.0/cv3/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.6/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.7/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.7/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.1/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.1/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.1/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.1/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/m/m.1/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/cv3/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/m.0/cv3/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.8/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.9/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.9/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.9/m/MaxPool_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.9/m_1/MaxPool_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.9/m_2/MaxPool_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.9/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.9/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.9/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/qkv/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__10":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Reshape_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Transpose_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/MatMul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Softmax_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Transpose_1_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Split_output_2":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/MatMul_1_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Reshape_1_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__12":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Reshape_2_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__11":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/pe/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/attn/proj/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/ffn/ffn.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/ffn/ffn.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/ffn/ffn.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/m/m.0/Add_1_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.10/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.11/Resize_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.12/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.13/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.14/Resize_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.15/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.16/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.17/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.17/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.18/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.19/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.20/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.20/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.21/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/Split_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/Split_output_1":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.0/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.0/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.0/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.1/cv1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.1/cv1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.1/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.1/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/m/m.1/Add_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/cv3/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/m.0/cv3/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/cv2/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.22/cv2/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.2/cv2.2.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.2/cv2.2.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.2/cv2.2.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.2/cv2.2.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.2/cv2.2.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.0/cv3.2.0.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.0/cv3.2.0.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.0/cv3.2.0.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.0/cv3.2.0.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.1/cv3.2.1.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.1/cv3.2.1.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.1/cv3.2.1.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.1/cv3.2.1.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.2/cv3.2.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Concat_3_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__18":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Reshape_5_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.2/cv4.2.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.2/cv4.2.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.2/cv4.2.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.2/cv4.2.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.2/cv4.2.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__17":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Reshape_2_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.1/cv2.1.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.1/cv2.1.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.1/cv2.1.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.1/cv2.1.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.1/cv2.1.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.0/cv3.1.0.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.0/cv3.1.0.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.0/cv3.1.0.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.0/cv3.1.0.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.1/cv3.1.1.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.1/cv3.1.1.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.1/cv3.1.1.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.1/cv3.1.1.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.1/cv3.1.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Concat_2_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__16":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Reshape_4_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.1/cv4.1.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.1/cv4.1.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.1/cv4.1.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.1/cv4.1.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.1/cv4.1.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__15":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Reshape_1_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.0/cv2.0.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.0/cv2.0.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.0/cv2.0.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.0/cv2.0.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv2.0/cv2.0.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.0/cv3.0.0.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.0/cv3.0.0.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.0/cv3.0.0.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.0/cv3.0.0.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.1/cv3.0.1.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.1/cv3.0.1.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.1/cv3.0.1.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.1/cv3.0.1.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv3.0/cv3.0.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Concat_1_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__14":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Reshape_3_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Concat_4_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.0/cv4.0.0/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.0/cv4.0.0/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.0/cv4.0.1/conv/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.0/cv4.0.1/act/Mul_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/cv4.0/cv4.0.2/Conv_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"__ConvertTensor__13":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Reshape_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	},
+	"/model.23/Concat_output_0":	{
+		"QUANT_FEATURE_BIT":	8
+	}
+}

@@ -8,6 +8,7 @@ from .deploy_stpu import gen_stpu_minmax
 from .deploy_ti import gen_ti_json
 from .deploy_trt import gen_trt_range
 from .deploy_imx import gen_imx_range
+from .deploy_ingenic import gen_ingenic_quant_info
 
 
 def to_deploy(graph, act_clip_val, weight_clip_val, args, **kwargs):

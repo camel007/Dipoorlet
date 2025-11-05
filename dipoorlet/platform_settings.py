@@ -80,6 +80,24 @@ rv_platform_settings = {
     'deploy_weight': True
 }
 
+ingenic_platform_settings = {
+    'deploy_exclude_layers': [],
+    'quant_nodes': basic_quant_node,
+    'qi_params': {
+        'bit_width': 8,
+        'type': 'Linear',
+        'symmetric': False
+    },
+    'qw_params': {
+        'bit_width': 8,
+        'type': 'Linear',
+        'per_channel': False,
+        'symmetric': False
+    },
+    'quantize_network_output': True,
+    'deploy_weight': True
+}
+
 
 # Set rely on Atlas manual.
 # https://www.hiascend.com/document/detail/zh/canncommercial/601/inferapplicationdev/graphdevg/graphdevg_000029.html
@@ -180,5 +198,6 @@ platform_setting_table = {
     'atlas': atlas_platform_settings,
     'snpe': snpe_platform_settings,
     'ti': ti_platform_settings,
-    'imx': imx_platform_settings
+    'imx': imx_platform_settings,
+    'ingenic': ingenic_platform_settings
 }
