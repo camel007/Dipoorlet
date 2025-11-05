@@ -12,6 +12,11 @@ from onnx import TensorProto, numpy_helper
 from onnx.external_data_helper import convert_model_to_external_data
 from onnxruntime.quantization.onnx_quantizer import ONNXQuantizer
 from onnxruntime.quantization.quant_utils import QuantizationMode, QuantType
+try:
+    # ORT >= 1.16 expects tensors_range values to be TensorData
+    from onnxruntime.quantization.quant_utils import TensorData as ORT_TensorData
+except Exception:
+    ORT_TensorData = None
 from termcolor import colored
 
 from .platform_settings import platform_setting_table
@@ -427,8 +432,20 @@ def deploy_QOperator(model, tensor_range, args):
     else:
         activation_type = QuantType.QUInt8
 
+    # Adapt to ORT API change: convert list [min, max] to TensorData if required
+    tensors_range_ort = tensor_range
+    if ORT_TensorData is not None and isinstance(tensor_range, dict):
+        try:
+            tensors_range_ort = {
+                k: ORT_TensorData(k, np.asarray(v, dtype=np.float32))
+                for k, v in tensor_range.items()
+            }
+        except Exception:
+            # Fallback to original if conversion fails; ORT may accept legacy format
+            tensors_range_ort = tensor_range
+
     quantizer = ONNXQuantizer(model, per_channel, False, mode, True,
-                              weight_type, activation_type, tensor_range,
+                              weight_type, activation_type, tensors_range_ort,
                               None, args.skip_layers, op_types_to_quantize)
     quantizer.quantize_model()
     model_output = os.path.join(args.output_dir, 'qop_model.onnx')
