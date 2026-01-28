@@ -44,7 +44,9 @@ def find_clip_val_hist(onnx_graph, args, store_stats=None, **kwargs):
         for i in range(len(hist)):
             accum += hist[i]
             if accum >= args.threshold:
-                clip_value = (i + 0.5) * (data_max / args.bins)
+                bins = int(args.bins)
+                dmax = float(data_max)
+                clip_value = np.float32((i + 0.5) * (dmax / bins))
                 clip_val[name] = [max(-clip_value, np.min(stats_min_max[name]['min'])),
                                   min(clip_value, np.max(stats_min_max[name]['max']))]
                 break
