@@ -311,12 +311,16 @@ def update_model_path(name, args):
 
 
 def save_clip_val(act_clip_val, weight_clip_val, args, act_fname='act_clip_val.json', weight_fname='weight_clip_val.json'):
+    def _jsonify(val):
+        # Convert numpy values/arrays to JSON-serializable Python types.
+        return val.tolist() if hasattr(val, "tolist") else val
+
     for k, v in act_clip_val.items():
-        act_clip_val[k][0] = act_clip_val[k][0].tolist()
-        act_clip_val[k][1] = act_clip_val[k][1].tolist()
+        act_clip_val[k][0] = _jsonify(act_clip_val[k][0])
+        act_clip_val[k][1] = _jsonify(act_clip_val[k][1])
     for k, v in weight_clip_val.items():
-        weight_clip_val[k][0] = weight_clip_val[k][0].tolist()
-        weight_clip_val[k][1] = weight_clip_val[k][1].tolist()
+        weight_clip_val[k][0] = _jsonify(weight_clip_val[k][0])
+        weight_clip_val[k][1] = _jsonify(weight_clip_val[k][1])
     with open(os.path.join(args.output_dir, act_fname), 'w') as f:
         json.dump(act_clip_val, f, indent=4)
     with open(os.path.join(args.output_dir, weight_fname), 'w') as f:
