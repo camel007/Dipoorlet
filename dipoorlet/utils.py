@@ -349,16 +349,17 @@ def reduce_clip_val(rank_size, args, act_fname='act_clip_val.json', weight_fname
     save_clip_val(act_clip_val, weight_clip_val, args)
 
 
-def load_clip_val(args, act_fname='act_clip_val.json', weight_fname='weight_clip_val.json'):
+def load_clip_val(args, act_fname='act_clip_val.json', weight_fname='weight_clip_val.json', base_dir=None):
+    base_dir = args.output_dir if base_dir is None else base_dir
     act_clip_val = {}
     weight_clip_val = {}
-    with open(os.path.join(args.output_dir, act_fname), 'r') as f:
+    with open(os.path.join(base_dir, act_fname), 'r') as f:
         act_clip_val = json.load(f)
         for k, v in act_clip_val.items():
             # We need scalar here.
             act_clip_val[k][0] = np.float64(act_clip_val[k][0])
             act_clip_val[k][1] = np.float64(act_clip_val[k][1])
-    with open(os.path.join(args.output_dir, weight_fname), 'r') as f:
+    with open(os.path.join(base_dir, weight_fname), 'r') as f:
         per_channel = False
         if 'per_channel' in platform_setting_table[args.deploy]['qw_params']:
             per_channel = platform_setting_table[args.deploy]['qw_params']['per_channel']

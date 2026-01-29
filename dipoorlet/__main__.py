@@ -52,6 +52,8 @@ parser.add_argument("--pattern", help="Sparse pattern", choices=["unstruction", 
 parser.add_argument("--optim_transformer", help="Transformer model optimization", default=False, action='store_true')
 parser.add_argument("--model_type", help="Transformer model type", choices=["unet"], default=None)
 parser.add_argument("--quant_format", default="QDQ", type=str, choices=["QOP", "QDQ"])
+parser.add_argument("--load_clip", help="Load clip values from a directory or act_clip_val.json path and skip calibration",
+                    default=None)
 args = parser.parse_args()
 
 if args.slurm:
@@ -91,6 +93,18 @@ dist.barrier()
 args.optimzed_model_dir = os.path.join(args.output_dir, 'optim_model.onnx')
 logger.parent = None
 
+def _resolve_clip_dir(path):
+    if os.path.isdir(path):
+        return path
+    if os.path.isfile(path):
+        base = os.path.basename(path)
+        if base == 'act_clip_val.json' or base == 'weight_clip_val.json':
+            return os.path.dirname(path)
+    raise FileNotFoundError(
+        "load_clip expects a directory or a path to act_clip_val.json/weight_clip_val.json: {}".format(path)
+    )
+
+
 start = time.time()
 if args.optim_transformer:
     model = onnx.load(args.optimzed_model_dir)
@@ -116,16 +130,24 @@ setattr(args, 'local_rank', dist.get_rank() % torch.cuda.device_count())
 setattr(args, 'world_size', dist.get_world_size())
 if dist.get_rank() == 0:
     logger.info("Do tensor calibration...")
-act_clip_val, weight_clip_val = tensor_calibration(onnx_graph, args)
-tensor_range = copy.deepcopy(act_clip_val)
-save_clip_val(act_clip_val, weight_clip_val, args,
-              act_fname='act_clip_val.json.rank{}'.format(args.rank),
-              weight_fname='weight_clip_val.json.rank{}'.format(args.rank))
-dist.barrier()
-if dist.get_rank() == 0:
-    reduce_clip_val(dist.get_world_size(), args)
-dist.barrier()
-act_clip_val, weight_clip_val = load_clip_val(args)
+if args.load_clip:
+    clip_dir = _resolve_clip_dir(args.load_clip)
+    if dist.get_rank() == 0:
+        logger.info("Load clip values from: {}".format(clip_dir))
+    act_clip_val, weight_clip_val = load_clip_val(args, base_dir=clip_dir)
+    tensor_range = copy.deepcopy(act_clip_val)
+    dist.barrier()
+else:
+    act_clip_val, weight_clip_val = tensor_calibration(onnx_graph, args)
+    tensor_range = copy.deepcopy(act_clip_val)
+    save_clip_val(act_clip_val, weight_clip_val, args,
+                  act_fname='act_clip_val.json.rank{}'.format(args.rank),
+                  weight_fname='weight_clip_val.json.rank{}'.format(args.rank))
+    dist.barrier()
+    if dist.get_rank() == 0:
+        reduce_clip_val(dist.get_world_size(), args)
+    dist.barrier()
+    act_clip_val, weight_clip_val = load_clip_val(args)
 
 # Weight Transform.
 if dist.get_rank() == 0:
@@ -133,6 +155,8 @@ if dist.get_rank() == 0:
 graph, graph_ori, act_clip_val, weight_clip_val = \
     weight_calibration(onnx_graph, act_clip_val, weight_clip_val, args)
 dist.barrier()
+if dist.get_rank() == 0:
+    save_clip_val(act_clip_val, weight_clip_val, args)
 
 # Profiling Distributed.
 if dist.get_rank() == 0:
