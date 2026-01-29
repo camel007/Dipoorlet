@@ -54,7 +54,7 @@ def adaround(graph_ori, graph, act_clip_val, weight_clip_val, args):
             prev_act_cache = q_act_cache.activation_cache.copy()
 
             # Get weight and build torch conv.
-            weight = numpy_helper.to_array(graph_ada.initializer[node.input[1]][0])
+            weight = numpy_helper.to_array(graph_ada.initializer[node.input[1]][0]).copy()
             bias = None
             if len(node.input) == 3:
                 bias = numpy_helper.to_array(graph_ada.initializer[node.input[2]][0])
