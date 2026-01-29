@@ -1,4 +1,5 @@
 import copy
+import os
 import time
 import sys
 from collections import OrderedDict
@@ -18,6 +19,103 @@ from .utils import ONNXGraph, logger
 
 ort.set_default_logger_severity(3)
 sys.setrecursionlimit(2000)
+
+_ORT_SESSION_OPTIONS = None
+
+
+def _parse_int_env(value):
+    if value is None:
+        return None
+    try:
+        return int(value)
+    except ValueError:
+        # Handle values like "4(x2)" by taking the leading integer.
+        token = value.split('(')[0]
+        try:
+            return int(token)
+        except ValueError:
+            digits = ''.join(ch for ch in value if ch.isdigit())
+            return int(digits) if digits else None
+
+
+def _get_local_world_size():
+    for key in ("LOCAL_WORLD_SIZE", "OMPI_COMM_WORLD_LOCAL_SIZE", "SLURM_NTASKS_PER_NODE"):
+        val = _parse_int_env(os.environ.get(key))
+        if val and val > 0:
+            return val
+    return 1
+
+
+def _get_ort_session_options(args):
+    # Default to auto-allocating threads per process.
+    global _ORT_SESSION_OPTIONS
+    if _ORT_SESSION_OPTIONS is not None:
+        return _ORT_SESSION_OPTIONS
+    try:
+        cores = len(os.sched_getaffinity(0))
+    except AttributeError:
+        cores = os.cpu_count() or 1
+    local_world = _get_local_world_size()
+    intra = max(1, cores // max(1, local_world))
+    inter = 1
+    sess_options = ort.SessionOptions()
+    sess_options.intra_op_num_threads = intra
+    sess_options.inter_op_num_threads = inter
+    _ORT_SESSION_OPTIONS = sess_options
+    return sess_options
+
+
+def _reshape_input(data, shape):
+    if len(shape) == 0:
+        return data
+    shape = list(shape)
+    if shape[0] == 0:
+        shape[0] = 1
+    return data.reshape(*shape)
+
+
+def input_data_generator(input_dir, input_name_list, data_st_idx, data_ed_idx):
+    for idx in range(data_st_idx, data_ed_idx):
+        data = {}
+        for i in input_name_list:
+            data[i] = np.fromfile(f'{input_dir}/{i}/{idx}.bin', 'float32')
+        yield data
+
+
+def input_data_batch_generator(input_dir, input_name_list, data_st_idx, data_ed_idx, batch_size, tensor_shapes):
+    for batch_st in range(data_st_idx, data_ed_idx, batch_size):
+        batch_ed = min(batch_st + batch_size, data_ed_idx)
+        batch_idx = range(batch_st, batch_ed)
+        data = {}
+        for name in input_name_list:
+            shape = tensor_shapes[name]
+            samples = []
+            for idx in batch_idx:
+                raw = np.fromfile(f'{input_dir}/{name}/{idx}.bin', 'float32')
+                samples.append(_reshape_input(raw, shape))
+            if len(samples) == 1:
+                data[name] = samples[0]
+            else:
+                if len(shape) > 0 and shape[0] in (0, 1):
+                    data[name] = np.concatenate(samples, axis=0)
+                else:
+                    data[name] = np.stack(samples, axis=0)
+        yield data
+
+
+def _get_calib_batch(onnx_graph, args):
+    batch = max(1, int(getattr(args, "ada_bs", 1)))
+    if batch <= 1:
+        return 1
+    for name in onnx_graph.network_inputs:
+        shape = onnx_graph.get_tensor_shape(name)
+        if len(shape) > 0 and shape[0] != 0:
+            logger.warning(
+                "Calibration batch %d requested but input %s has fixed batch dim %s; fallback to batch=1.",
+                batch, name, shape[0]
+            )
+            return 1
+    return batch
 
 
 class ActivationCache(object):
@@ -95,7 +193,9 @@ class ActivationCache(object):
         sub_graph = self.graph_list[self.name_to_graph_id[subnet_name]]
         sub_net = sub_graph.model
         ort_inputs = {}
-        ort_session = ort.InferenceSession(sub_net.SerializeToString(), providers=self.providers)
+        sess_options = _get_ort_session_options(self.args)
+        ort_session = ort.InferenceSession(sub_net.SerializeToString(), sess_options=sess_options,
+                                           providers=self.providers)
         if 'CUDAExecutionProvider' not in ort_session.get_provider_options():
             logger.warning("CUDA may not used. Please check your ort/cuda/cudnn version.")
 
@@ -197,7 +297,8 @@ def forward_get_minmax(onnx_graph, args):
             if output_name not in [_o.name for _o in graph.output]:
                 graph.output.insert(0, onnx.ValueInfoProto(name=output_name))
     providers = [("CUDAExecutionProvider", {'device_id': args.local_rank})]
-    ort_session = ort.InferenceSession(net.SerializeToString(), providers=providers)
+    sess_options = _get_ort_session_options(args)
+    ort_session = ort.InferenceSession(net.SerializeToString(), sess_options=sess_options, providers=providers)
     if 'CUDAExecutionProvider' not in ort_session.get_provider_options():
         logger.warning("CUDA may not used. Please check your ort/cuda/cudnn version.")
     # Start activation quantization.
@@ -207,10 +308,14 @@ def forward_get_minmax(onnx_graph, args):
     rank_num = args.data_num // args.world_size
     data_st_idx = args.rank * rank_num
     data_ed_idx = min((args.rank + 1) * rank_num, args.data_num)
-    for data in tqdm(input_data_generator(args.input_dir, onnx_graph.network_inputs, data_st_idx, data_ed_idx),
-                     desc='Minmax update'):
+    batch_size = _get_calib_batch(onnx_graph, args)
+    total = (data_ed_idx - data_st_idx + batch_size - 1) // batch_size
+    tensor_shapes = {name: onnx_graph.get_tensor_shape(name) for name in onnx_graph.network_inputs}
+    data_iter = input_data_batch_generator(args.input_dir, onnx_graph.network_inputs,
+                                           data_st_idx, data_ed_idx, batch_size, tensor_shapes)
+    for data in tqdm(data_iter, total=total, desc='Minmax update'):
         for name in onnx_graph.network_inputs:
-            ort_inputs[name] = data[name][:].reshape(onnx_graph.get_tensor_shape(name))
+            ort_inputs[name] = data[name]
         st = time.time()
         outputs = [output.name for output in ort_session.get_outputs()]
         ort_outputs = ort_session.run(outputs, ort_inputs)
@@ -245,7 +350,8 @@ def forward_get_hist(onnx_graph, stats_min_max, args):
             if output_name not in [_o.name for _o in graph.output]:
                 graph.output.insert(0, onnx.ValueInfoProto(name=output_name))
     providers = [("CUDAExecutionProvider", {'device_id': args.local_rank})]
-    ort_session = ort.InferenceSession(net.SerializeToString(), providers=providers)
+    sess_options = _get_ort_session_options(args)
+    ort_session = ort.InferenceSession(net.SerializeToString(), sess_options=sess_options, providers=providers)
     if 'CUDAExecutionProvider' not in ort_session.get_provider_options():
         logger.warning("CUDA may not used. Please check your ort/cuda/cudnn version.")
     # Start activation quantization.
@@ -254,10 +360,14 @@ def forward_get_hist(onnx_graph, stats_min_max, args):
     rank_num = args.data_num // args.world_size
     data_st_idx = args.rank * rank_num
     data_ed_idx = min((args.rank + 1) * rank_num, args.data_num)
-    for data in tqdm(input_data_generator(args.input_dir, onnx_graph.network_inputs, data_st_idx, data_ed_idx),
-                     desc='Hist update: {}'.format(args.rank)):
+    batch_size = _get_calib_batch(onnx_graph, args)
+    total = (data_ed_idx - data_st_idx + batch_size - 1) // batch_size
+    tensor_shapes = {name: onnx_graph.get_tensor_shape(name) for name in onnx_graph.network_inputs}
+    data_iter = input_data_batch_generator(args.input_dir, onnx_graph.network_inputs,
+                                           data_st_idx, data_ed_idx, batch_size, tensor_shapes)
+    for data in tqdm(data_iter, total=total, desc='Hist update: {}'.format(args.rank)):
         for name in onnx_graph.network_inputs:
-            ort_inputs[name] = data[name][:].reshape(onnx_graph.get_tensor_shape(name))
+            ort_inputs[name] = data[name]
         outputs = [output.name for output in ort_session.get_outputs()]
         ort_outputs = ort_session.run(outputs, ort_inputs)
         ort_outs = OrderedDict(zip(outputs, ort_outputs))
@@ -290,7 +400,8 @@ def forward_net_octav(onnx_graph, args):
             if output_name not in [_o.name for _o in graph.output]:
                 graph.output.insert(0, onnx.ValueInfoProto(name=output_name))
     providers = [("CUDAExecutionProvider", {'device_id': args.local_rank})]
-    ort_session = ort.InferenceSession(net.SerializeToString(), providers=providers)
+    sess_options = _get_ort_session_options(args)
+    ort_session = ort.InferenceSession(net.SerializeToString(), sess_options=sess_options, providers=providers)
     if 'CUDAExecutionProvider' not in ort_session.get_provider_options():
         logger.warning("CUDA may not used. Please check your ort/cuda/cudnn version.")
     # Start activation quantization.
@@ -456,14 +567,6 @@ def forward_net_octav_transformer(onnx_graph, args):
     return statistics
 
 
-def input_data_generator(input_dir, input_name_list, data_st_idx, data_ed_idx):
-    for idx in range(data_st_idx, data_ed_idx):
-        data = {}
-        for i in input_name_list:
-            data[i] = np.fromfile(f'{input_dir}/{i}/{idx}.bin', 'float32')
-        yield data
-
-
 def forward_get_tensor(graph, net, index, args):
     for node in graph.graph.node:
         if node.op_type in QUANT_NODE_NAME_LIST:
@@ -474,7 +577,8 @@ def forward_get_tensor(graph, net, index, args):
     rank = dist.get_rank()
     device = rank % torch.cuda.device_count()
     providers = [("CUDAExecutionProvider", {'device_id': device})]
-    ort_session = ort.InferenceSession(net.SerializeToString(), providers=providers)
+    sess_options = _get_ort_session_options(args)
+    ort_session = ort.InferenceSession(net.SerializeToString(), sess_options=sess_options, providers=providers)
     ort_inputs = {}
     for data in input_data_generator(args.input_dir, graph.network_inputs, index, index + 1):
         for name in graph.network_inputs:
