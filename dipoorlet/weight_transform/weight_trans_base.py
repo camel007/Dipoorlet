@@ -19,8 +19,7 @@ def weight_calibration(onnx_graph, act_clip_val, weight_clip_val, args):
     graph_after_wt = ONNXGraph()
     graph_after_wt.copy_from(onnx_graph)
     if args.bc:
-        if dist.get_rank() == 0:
-            bias_correction(graph_after_wt, act_clip_val, weight_clip_val, args)
+        bias_correction(graph_after_wt, act_clip_val, weight_clip_val, args)
         dist.barrier()
         update_model_path('update_bias_model', args)
         model = onnx.load(args.model)
