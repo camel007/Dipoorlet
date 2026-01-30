@@ -213,15 +213,20 @@ def show_model_ranges(graph, act_clip_val, weight_clip_val, args):
     ranges_all.update(weight_clip_val)
     for name, range in ranges_all.items():
         tensor_shape = graph.get_tensor_shape(name)
-        if isinstance(range[0], np.ndarray):
+        r0, r1 = range[0], range[1]
+        if isinstance(r0, (list, tuple)):
+            r0 = np.array(r0)
+        if isinstance(r1, (list, tuple)):
+            r1 = np.array(r1)
+        if isinstance(r0, np.ndarray) or isinstance(r1, np.ndarray):
             per_channel = ""
             if 'per_channel' in platform_setting_table[args.deploy]['qw_params'] and \
                     platform_setting_table[args.deploy]['qw_params']['per_channel']:
                 per_channel = "per channel "
             logger.info("{:<30} Shape: {:<20} Range: {}[{:<10f} {:<10f}]".format(name, str(tensor_shape),
-                                                                                 per_channel, range[0].min(), range[1].max()))
+                                                                                 per_channel, np.min(r0), np.max(r1)))
         else:
-            logger.info("{:<30} Shape: {:<20} Range: [{:<10f} {:<10f}]".format(name, str(tensor_shape), range[0], range[1]))
+            logger.info("{:<30} Shape: {:<20} Range: [{:<10f} {:<10f}]".format(name, str(tensor_shape), r0, r1))
 
 
 def weight_need_perchannel(graph, args):
