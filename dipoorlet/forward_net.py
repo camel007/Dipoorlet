@@ -74,6 +74,14 @@ def _reshape_input(data, shape):
     return data.reshape(*shape)
 
 
+def _value_info_shape(shape):
+    # Keep rank; replace dynamic batch dim 0 with 1 to satisfy ORT shape inference.
+    shape = list(shape)
+    if len(shape) > 0 and shape[0] == 0:
+        shape[0] = 1
+    return shape
+
+
 def input_data_generator(input_dir, input_name_list, data_st_idx, data_ed_idx):
     for idx in range(data_st_idx, data_ed_idx):
         data = {}
@@ -247,9 +255,7 @@ class ActivationCache(object):
                     continue
                 if input not in self.graph.initializer:
                     in_type = self.graph.get_value_type(input)
-                    shape = self.graph.get_tensor_shape(input)
-                    if shape[0] == 0:
-                        shape = []
+                    shape = _value_info_shape(self.graph.get_tensor_shape(input))
                     input_value = mtvi(input, in_type, shape)
                     inputs.append(input_value)
                     network_inputs.append(input)
@@ -260,9 +266,7 @@ class ActivationCache(object):
                 if output == '':
                     continue
                 out_type = self.graph.get_value_type(output)
-                shape = self.graph.get_tensor_shape(output)
-                if shape[0] == 0:
-                    shape = []
+                shape = _value_info_shape(self.graph.get_tensor_shape(output))
                 output_value = mtvi(output, out_type, shape)
                 outputs.append(output_value)
                 network_outputs.append(output)
