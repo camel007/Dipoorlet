@@ -1,5 +1,6 @@
 import json
 import os
+import numpy as np
 
 from .deploy_default import deploy_dispatcher
 
@@ -8,7 +9,9 @@ from .deploy_default import deploy_dispatcher
 def gen_trt_range(graph, clip_val, args, **kwargs):
     for k, v in clip_val.items():
         # max(-clip_min, clip_max)
-        clip_val[k] = max(-clip_val[k][0].astype(float), clip_val[k][1].astype(float))
+        v0 = np.min(clip_val[k][0])
+        v1 = np.max(clip_val[k][1])
+        clip_val[k] = max(-float(v0), float(v1))
 
     tensorrt_blob_json = dict()
     tensorrt_blob_json['blob_range'] = clip_val
