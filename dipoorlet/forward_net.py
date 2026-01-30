@@ -151,13 +151,13 @@ class ActivationCache(object):
             for data in input_data_generator(self.args.input_dir, self.graph.network_inputs, self.st, self.ed):
                 for name in self.graph.network_inputs:
                     self.activation_cache[name].append(
-                        data[name][:].reshape(*self.graph.get_tensor_shape(name)).copy())
+                        _reshape_input(data[name], self.graph.get_tensor_shape(name)).copy())
         else:
             # Means We need specific tensor.
             self.activation_cache[in_tensor] = []
             for data in input_data_generator(self.args.input_dir, self.graph.network_inputs, self.st, self.ed):
                 self.activation_cache[in_tensor].append(
-                    data[in_tensor][:].reshape(*self.graph.get_tensor_shape(in_tensor)).copy())
+                    _reshape_input(data[in_tensor], self.graph.get_tensor_shape(in_tensor)).copy())
 
     def input_generator(self, tensor_name_list):
         # TODO batch generator.
@@ -582,7 +582,7 @@ def forward_get_tensor(graph, net, index, args):
     ort_inputs = {}
     for data in input_data_generator(args.input_dir, graph.network_inputs, index, index + 1):
         for name in graph.network_inputs:
-            ort_inputs[name] = data[name][:].reshape(graph.get_tensor_shape(name))
+            ort_inputs[name] = _reshape_input(data[name], graph.get_tensor_shape(name))
         outputs = [output.name for output in ort_session.get_outputs()]
         ort_outputs = ort_session.run(outputs, ort_inputs)
         ort_outs = OrderedDict(zip(outputs, ort_outputs))
